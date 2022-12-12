@@ -100,7 +100,7 @@
                     android:src="@drawable/ic_baseline_shopping_cart_24"
                     android:padding="8dp"
                     android:scaleType="fitXY"
-                    android:background="">
+                   >
 
                 </ImageButton>
 
