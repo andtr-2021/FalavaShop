@@ -99,7 +99,7 @@
                     android:src="@drawable/ic_baseline_shopping_cart_24"
                     android:padding="8dp"
                     android:scaleType="fitXY"
-                   >
+                    >
 
                 </ImageButton>
 
@@ -133,8 +133,6 @@
         app:sliderIndicatorSelectedColor="#5A5A5A"
         app:sliderIndicatorUnselectedColor="#FFF"
         app:sliderScrollTimeInSec="1" />
-
-
 
 
 

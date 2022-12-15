@@ -6,7 +6,7 @@ import com.example.falavashop.R;
 public class SearchActivity extends BaseApp {
     @Override
     public int getLayout() {
-        return R.layout.shopee_mall;
+        return R.layout.activity_shopee_mall;
     }
 
     @Override
