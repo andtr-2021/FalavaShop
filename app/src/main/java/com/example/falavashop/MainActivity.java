@@ -2,10 +2,9 @@ package com.example.falavashop;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,17 +17,24 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
-import com.example.falavashop.UI.Activity.SearchActivity;
+import com.example.falavashop.Config.Config;
+import com.example.falavashop.UI.SearchProductActivity;
+import com.example.falavashop.retrofit.RetrofitAPI;
+import com.example.falavashop.retrofit.RetrofitClient;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import butterknife.internal.Utils;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +43,11 @@ public class MainActivity extends AppCompatActivity {
     ViewFlipper viewFlipper;
     NavigationView navigationView;
     ListView listViewTrangChinh;
+    CardView searchBar;
 
+
+    RetrofitAPI api;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,25 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getEventClick() {
-        listViewTrangChinh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i) {
-                    case 0:
-                        Intent trangchu = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(trangchu);
-                        break;
-                    case 1:
-                        Intent dienthoai = new Intent(getApplicationContext(), SearchActivity.class);
-                        dienthoai.putExtra("loai", 1);
-                        startActivity(dienthoai);
-                        break;
-                }
-            }
-        });
-    }
-
     private boolean isConnected(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -107,27 +98,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void App() {
-        viewFlipper = findViewById(R.id.vewlipper);
         toolbar = findViewById(R.id.tool_bar_controller);
         viewFlipper = findViewById(R.id.vewlipper);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationview);
         listViewTrangChinh = findViewById(R.id.listviewtrangchinh);
 
+        searchBar = findViewById(R.id.search_product);
+
         if(isConnected(this)){
             ActionViewFlipper();
-            getEventClick();
+            api = RetrofitClient.getInstance(Config.PRODUCER_BASE_URL).create(RetrofitAPI.class);
         }else{
             Toast.makeText(getApplicationContext(), "Không có Internet, vui lòng kết nối Internet", Toast.LENGTH_LONG).show();
         }
 
+        searchBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent searchProduct = new Intent(getApplicationContext(), SearchProductActivity.class);
+                startActivity(searchProduct);
+            }
+        });
+
     }
 
 
-
-    
-
-
-
-
+    @Override
+    protected void onDestroy() {
+        compositeDisposable.clear();
+        super.onDestroy();
+    }
 }
