@@ -33,9 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import butterknife.internal.Utils;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
+
+public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     DrawerLayout drawerLayout;

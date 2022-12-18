@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.falavashop.R;
-import com.example.falavashop.adapters.SliderAdapter;
-import com.example.falavashop.models.SliderModel;
+import com.example.falavashop.Adapter.SliderAdapter;
+import com.example.falavashop.Model.SliderModel;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;

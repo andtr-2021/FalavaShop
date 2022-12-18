@@ -1,4 +1,4 @@
-package com.example.falavashop.models;
+package com.example.falavashop.Model;
 
 public class SliderModel {
 

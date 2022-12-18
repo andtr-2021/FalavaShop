@@ -1,4 +1,4 @@
-package com.example.falavashop.adapters;
+package com.example.falavashop.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.falavashop.R;
-import com.example.falavashop.models.SliderModel;
+import com.example.falavashop.Model.SliderModel;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.ArrayList;

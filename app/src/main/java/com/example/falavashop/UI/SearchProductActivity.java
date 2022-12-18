@@ -1,30 +1,19 @@
 package com.example.falavashop.UI;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.database.Observable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.falavashop.Adapter.SearchAdapter;
 import com.example.falavashop.Config.Config;
 import com.example.falavashop.Model.Results;
 import com.example.falavashop.R;
-import com.example.falavashop.Tool.AppTool;
 import com.example.falavashop.retrofit.RetrofitAPI;
 import com.example.falavashop.retrofit.RetrofitClient;
 
@@ -32,15 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.internal.Utils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchProductActivity extends AppCompatActivity {
 
