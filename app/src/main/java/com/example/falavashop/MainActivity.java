@@ -1,132 +1,101 @@
 package com.example.falavashop;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
+import android.view.WindowManager;
 
-import com.bumptech.glide.Glide;
-import com.example.falavashop.Config.Config;
-import com.example.falavashop.UI.SearchProductActivity;
-import com.example.falavashop.retrofit.RetrofitAPI;
-import com.example.falavashop.retrofit.RetrofitClient;
+import com.example.falavashop.databinding.ActivityMainBinding;
+import com.example.falavashop.helpers.BottomNavigationBehavior;
+import com.example.falavashop.helpers.DarkModePrefManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-
-public class MainActivity extends AppCompatActivity {
-
-    Toolbar toolbar;
-    DrawerLayout drawerLayout;
-    ViewFlipper viewFlipper;
-    NavigationView navigationView;
-    ListView listViewTrangChinh;
-    CardView searchBar;
+    ActivityMainBinding binding;
+    NavHostFragment navHostFragment;
+    private BottomNavigationView bottomNavigationView;
 
 
-    RetrofitAPI api;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        App();
-        ActionBar();
-    }
 
-
-    @SuppressLint("ResourceType")
-    private void ActionViewFlipper() {
-        List<String> ads = new ArrayList<>();
-        ads.add("https://cf.shopee.vn/file/c433f40e9fc218b0f96b9ed0243bd01c_xxhdpi");
-        ads.add("https://cf.shopee.vn/file/a4c94acbe2facdc761e59289fa4d3d68_xxhdpi");
-        ads.add("https://cf.shopee.vn/file/2c7ab4a8b863ba26f0500986c7ab6074_xxhdpi");
-        ads.add("https://cf.shopee.vn/file/f67d7dafa22186390fc37daaaa7f08d3_xxhdpi");
-        for (int i=0; i<ads.size(); i++){
-            ImageView imageView = new ImageView(getApplicationContext());
-            Glide.with(getApplicationContext()).load(ads.get(i)).into(imageView);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            viewFlipper.addView(imageView);
-        }
-        viewFlipper.setFlipInterval(3000);
-        viewFlipper.setAutoStart(true);
-        Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.drawable.slide_in_right);
-        Animation slide_out = AnimationUtils.loadAnimation(getApplicationContext(), R.drawable.slide_out_right);
-        viewFlipper.setInAnimation(slide_in);
-        viewFlipper.setOutAnimation(slide_out);
-
-    }
-
-    private boolean isConnected(Context context){
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        return wifi != null && wifi.isConnected() || (mobile != null && mobile.isConnected());
-    }
-
-    private void ActionBar() {
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-    }
-
-    private void App() {
-        toolbar = findViewById(R.id.tool_bar_controller);
-        viewFlipper = findViewById(R.id.vewlipper);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.navigationview);
-        listViewTrangChinh = findViewById(R.id.listviewtrangchinh);
-
-        searchBar = findViewById(R.id.search_product);
-
-        if(isConnected(this)){
-            ActionViewFlipper();
-            api = RetrofitClient.getInstance(Config.PRODUCER_BASE_URL).create(RetrofitAPI.class);
-        }else{
-            Toast.makeText(getApplicationContext(), "Không có Internet, vui lòng kết nối Internet", Toast.LENGTH_LONG).show();
+        if (new DarkModePrefManager(this).isNightMode()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
-        searchBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent searchProduct = new Intent(getApplicationContext(), SearchProductActivity.class);
-                startActivity(searchProduct);
-            }
-        });
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        View view = binding.getRoot();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(view);
+
+        setSupportActionBar(binding.appBarMain.toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        binding.drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        binding.navView.setNavigationItemSelectedListener(this);
+
+        setupNavigation();
 
     }
+
+    private void setupNavigation() {
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) binding.appBarMain.bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());
+
+        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        if (navHostFragment != null) {
+            NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
+        }
+    }
+
 
     @Override
-    protected void onDestroy() {
-        compositeDisposable.clear();
-        super.onDestroy();
+    public void onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+        } else if (id == R.id.nav_teach) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_dark_mode) {
+            DarkModePrefManager darkModePrefManager = new DarkModePrefManager(this);
+            darkModePrefManager.setDarkMode(!darkModePrefManager.isNightMode());
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            recreate();
+
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

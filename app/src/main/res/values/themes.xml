@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.FalavaShop" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.FalavaShop" parent="Theme.AppCompat.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -18,4 +18,60 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="BottomNavigationStyle" parent="Widget.Design.BottomNavigationView">
+        <!--        <item name="android:foreground">@drawable/ripple_custom</item>-->
+        <item name="android:background">@color/bottomNavigationBackground</item>
+        <!--<item name="itemBackground">@drawable/ripple_custom</item>-->
+        <item name="itemIconTint">@color/bottomNavigationTintColor</item>
+        <item name="itemTextColor">@color/bottomNavigationTextColor</item>
+        <item name="fontFamily">@font/opensans_bold</item>
+        <!--        <item name="android:fontFamily">@font/varela_round</item>-->
+
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/option1</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:fontFamily">@font/opensans_bold</item>
+        <item name="android:windowBackground">@color/frutorial_title</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:windowContentTransitions">true</item>
+
+        <!--        <item name="colorControlNormal">@color/colorPrimaryDark</item>-->
+        <item name="android:textColorSecondary">@color/grey_light</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+
+
+    </style>
+
+
+    <style name="parent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="parent.contentLayout">
+        <item name="android:background">@color/contentBodyColor</item>
+        <!--        <item name="android:padding">@dimen/normalPadding</item>-->
+    </style>
+
+    <style name="viewParent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="viewParent.headerText">
+        <item name="android:textColor">@color/contentTextColor</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

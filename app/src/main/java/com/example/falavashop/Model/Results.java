@@ -25,8 +25,13 @@ public class Results {
         this.title = title;
     }
 
+    public Results(String image, String price, String title) {
+        this.image = image;
+        this.price = price;
+        this.title = title;
+    }
+
     public String image;
     public String price;
     public String title;
-    public String slug;
 }

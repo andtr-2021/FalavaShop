@@ -1,13 +1,15 @@
-package com.example.falavashop.UI;
+package com.example.falavashop.UI.Activity;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.falavashop.Adapter.SearchAdapter;
@@ -25,13 +27,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class SearchProductActivity extends AppCompatActivity {
+public class FragmentProductSearch extends Fragment {
 
     ImageView button_search;
     EditText edtsearch;
-
-
-    Toolbar toolbar;
     RecyclerView recyclerView;
     List<Results> ListSearchProduct;
     RetrofitAPI retrofitAPI;
@@ -40,19 +39,30 @@ public class SearchProductActivity extends AppCompatActivity {
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        initView();
-
+    public FragmentProductSearch() {
     }
 
-    private void initView() {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        SetupFragment(view);
+        return view;
+    }
+
+
+    private void SetupFragment(View view) {
         ListSearchProduct = new ArrayList<>();
-        edtsearch = findViewById(R.id.edtseach);
-        recyclerView = findViewById(R.id.recycle_view_search);
-        button_search = findViewById(R.id.button_search);
+        edtsearch = view.findViewById(R.id.edtseach);
+        recyclerView = view.findViewById(R.id.recycle_view_search);
+        button_search = view.findViewById(R.id.button_search);
 
 
         retrofitAPI = RetrofitClient.getInstance(Config.PRODUCER_BASE_URL).create(RetrofitAPI.class);
@@ -60,13 +70,13 @@ public class SearchProductActivity extends AppCompatActivity {
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getDataSearch(edtsearch.getText().toString());
+                getDataSearch(view, edtsearch.getText().toString());
             }
         });
 
     }
 
-    private void getDataSearch(String s) {
+    private void getDataSearch(View view, String s) {
         ListSearchProduct.clear();
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("searchValue", s);
@@ -76,17 +86,17 @@ public class SearchProductActivity extends AppCompatActivity {
                 .subscribe(
                         data -> {
                             ListSearchProduct = data.getResults();
-                            searchAdapter = new SearchAdapter(getApplicationContext(), ListSearchProduct);
+                            searchAdapter = new SearchAdapter(view.getContext(), ListSearchProduct);
                             recyclerView.setAdapter(searchAdapter);
                         },
                         throwable -> {
-                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(view.getContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
                         }
                 ));
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         compositeDisposable.clear();
         super.onDestroy();
     }
